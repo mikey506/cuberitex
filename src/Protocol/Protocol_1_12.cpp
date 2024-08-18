@@ -344,32 +344,25 @@ void cProtocol_1_12::WriteEntityMetadata(cPacketizer & a_Pkt, const cEntity & a_
 	a_Pkt.WriteBEUInt8(METADATA_TYPE_BYTE);  // Type
 	a_Pkt.WriteBEInt8(Flags);
 
-	switch (a_Entity.GetEntityType())
-	{
-		case cEntity::etPlayer:
-		{
-			auto & Player = static_cast<const cPlayer &>(a_Entity);
+    switch (a_Entity.GetEntityType())
+    {
+        case cEntity::etPlayer:
+        {
+            auto & Player = static_cast<const cPlayer &>(a_Entity);
 
-			// TODO Set player custom name to their name.
-			// Then it's possible to move the custom name of mobs to the entities
-			// and to remove the "special" player custom name.
-			a_Pkt.WriteBEUInt8(ENTITY_CUSTOM_NAME);
-			a_Pkt.WriteBEUInt8(METADATA_TYPE_STRING);
-			a_Pkt.WriteString(Player.GetName());
+            a_Pkt.WriteBEUInt8(ENTITY_CUSTOM_NAME);
+            a_Pkt.WriteBEUInt8(METADATA_TYPE_STRING);
+            a_Pkt.WriteString(Player.GetName());
 
-			a_Pkt.WriteBEUInt8(LIVING_HEALTH);
-			a_Pkt.WriteBEUInt8(METADATA_TYPE_FLOAT);
-			a_Pkt.WriteBEFloat(static_cast<float>(Player.GetHealth()));
+            // New skin data
+            a_Pkt.WriteBEUInt8(PLAYER_SKIN_TEXTURE);
+            a_Pkt.WriteBEUInt8(METADATA_TYPE_STRING);
+            a_Pkt.WriteString(Player.GetSkinTexture());
 
-			a_Pkt.WriteBEUInt8(PLAYER_DISPLAYED_SKIN_PARTS);
-			a_Pkt.WriteBEUInt8(METADATA_TYPE_BYTE);
-			a_Pkt.WriteBEUInt8(static_cast<UInt8>(Player.GetSkinParts()));
+            a_Pkt.WriteBEUInt8(PLAYER_SKIN_SIGNATURE);
+            a_Pkt.WriteBEUInt8(METADATA_TYPE_STRING);
+            a_Pkt.WriteString(Player.GetSkinSignature());
 
-			a_Pkt.WriteBEUInt8(PLAYER_MAIN_HAND);
-			a_Pkt.WriteBEUInt8(METADATA_TYPE_BYTE);
-			a_Pkt.WriteBEUInt8(Player.IsLeftHanded() ? 0 : 1);
-			break;
-		}
 		case cEntity::etPickup:
 		{
 			a_Pkt.WriteBEUInt8(ITEM_ITEM);
