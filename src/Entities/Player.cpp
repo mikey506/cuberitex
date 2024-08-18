@@ -32,7 +32,24 @@
 #include "../CraftingRecipes.h"
 
 
+void cPlayer::SetSkin(const AString & a_SkinTexture, const AString & a_SkinSignature)
+{
+    m_SkinTexture = a_SkinTexture;
+    m_SkinSignature = a_SkinSignature;
 
+    // Notify clients of the skin change
+    m_ClientHandle->SendEntityMetadata();
+}
+
+const AString & cPlayer::GetSkinTexture() const
+{
+    return m_SkinTexture;
+}
+
+const AString & cPlayer::GetSkinSignature() const
+{
+    return m_SkinSignature;
+}
 
 
 namespace
